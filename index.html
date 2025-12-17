@@ -3,94 +3,136 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STUPOR</title>
+    <title>JOAQUIN MAX | PORTAFOLIO</title>
 
-    <!-- 1. Google Fonts: Familia 'Archivo' (Estética Suiza) -->
+    <!-- 1. FUENTE: SOLO ARCHIVO (Google Fonts) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;700&display=swap" rel="stylesheet">
 
-    <!-- 2. Estilos de la librería -->
+    <!-- 2. Estilos dFlip -->
     <link href="https://cdn.jsdelivr.net/npm/dflip/css/dflip.min.css" rel="stylesheet" type="text/css">
     <link href="https://cdn.jsdelivr.net/npm/dflip/css/themify-icons.min.css" rel="stylesheet" type="text/css">
 
     <style>
-        /* --- ESTÉTICA GENERAL --- */
+        /* --- SISTEMA DE DISEÑO (Extraído de tu PDF) --- */
+        :root {
+            /* El Gris Claro de tus páginas internas (aprox Pág. 5) */
+            --bg-color: #F0F0F0;      
+            
+            /* Tu Naranja Corporativo */
+            --accent-color: #E85E26;  
+            
+            /* Negro para textos (para contraste sobre fondo claro) */
+            --text-main: #111111;     
+        }
+
         body, html {
             height: 100%;
             margin: 0;
-            background-color: #0d0d0d; /* Negro casi puro, muy elegante */
-            font-family: 'Archivo', sans-serif !important;
+            background-color: var(--bg-color);
+            /* Tipografía global forzada */
+            font-family: 'Archivo', sans-serif !important; 
             overflow: hidden;
         }
 
+        /* --- MARCA DE AGUA (Layout Editorial) --- */
+        .brand-footer-left, .brand-footer-right {
+            position: fixed;
+            bottom: 30px;
+            z-index: 999;
+            font-weight: 700; /* Archivo Bold */
+            color: var(--text-main);
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            pointer-events: none;
+            line-height: 1.4;
+        }
+
+        .brand-footer-left {
+            left: 40px;
+            text-align: left;
+        }
+
+        .brand-footer-right {
+            right: 40px;
+            text-align: right;
+            color: var(--accent-color); /* Año en Naranja */
+        }
+
+        /* --- INTERFAZ DEL VISUALIZADOR --- */
         #flipbook-container {
             height: 100vh;
             width: 100vw;
-            position: relative;
         }
 
-        /* --- INTERFAZ ESTILO SUIZO (Minimalista) --- */
-        
-        /* 1. Hacemos transparente la barra de herramientas */
         .df-ui-wrapper {
             background: transparent !important;
             box-shadow: none !important;
             border: none !important;
-            padding: 20px !important;
+            padding-bottom: 40px !important;
         }
 
-        /* 2. Botones planos y limpios */
+        /* Botones (Adaptados al fondo claro) */
         .df-ui-btn {
             background: transparent !important;
-            border: none !important;
-            color: #ffffff !important; /* Iconos blancos puros */
-            opacity: 0.7; /* Sutil transparencia */
-            transition: opacity 0.3s ease, transform 0.2s ease;
-            margin: 0 5px !important;
-            border-radius: 0 !important; /* Sin bordes redondeados (Estilo Suizo) */
+            /* Borde gris suave */
+            border: 1px solid rgba(0,0,0,0.1) !important; 
+            /* Iconos negros */
+            color: var(--text-main) !important; 
+            border-radius: 0 !important; 
+            margin: 0 4px !important;
+            transition: all 0.2s ease;
         }
 
-        /* Efecto al pasar el mouse */
+        /* Estado Hover (Interacción) */
         .df-ui-btn:hover, .df-ui-btn.active {
-            opacity: 1 !important;
-            background: transparent !important;
+            border-color: var(--accent-color) !important;
+            background: var(--accent-color) !important;
+            color: #fff !important; /* Icono blanco sobre naranja */
+        }
+
+        /* Textos emergentes (Tooltips) */
+        .df-ui-popup {
+            background: var(--text-main) !important;
             color: #fff !important;
-            transform: scale(1.1); /* Pequeño feedback visual */
-        }
-
-        /* 3. Tipografía en los tooltips y números de página */
-        .df-ui-popup, .df-ui-size, .df-ui-btn {
-            font-family: 'Archivo', sans-serif !important;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            font-size: 12px !important;
-        }
-
-        /* --- OCULTAR HIPERVÍNCULOS (Funcionales pero invisibles) --- */
-        .df-page-content .df-link, 
-        .df-page-content a {
-            background-color: transparent !important;
-            box-shadow: none !important;
             border: none !important;
-            opacity: 0 !important; 
+            font-family: 'Archivo', sans-serif !important;
+            font-size: 11px !important;
+            border-radius: 0 !important;
+            padding: 4px 8px !important;
         }
-        .df-page-content .df-link:hover, 
-        .df-page-content a:hover {
+
+        /* Ocultar links amarillos */
+        .df-page-content .df-link, .df-page-content a {
+            opacity: 0 !important; 
+            background: transparent !important;
+        }
+        .df-page-content .df-link:hover, .df-page-content a:hover {
             opacity: 0 !important;
         }
 
-        /* Ajuste para móviles: botones más accesibles */
-        @media (max-width: 600px) {
-            .df-ui-wrapper {
-                background: linear-gradient(to top, rgba(0,0,0,0.8), transparent) !important;
+        /* Ajuste Móvil */
+        @media (max-width: 768px) {
+            .brand-footer-left, .brand-footer-right {
+                bottom: 15px; left: 20px; right: 20px; font-size: 10px;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- Contenedor del libro -->
+    <!-- DATOS (Como en tu portafolio) -->
+    <div class="brand-footer-left">
+        JOAQUIN MAX<br>CUEVAS VENTURA
+    </div>
+    
+    <div class="brand-footer-right">
+        PORTAFOLIO<br>2025
+    </div>
+
+    <!-- LIBRO -->
     <div id="flipbook-container"></div>
 
     <!-- SCRIPTS -->
@@ -101,18 +143,19 @@
         jQuery(document).ready(function() {
             
             var bookOptions = {
-                // ASEGÚRATE QUE EL NOMBRE SEA EXACTO
+                // TU PDF (Asegúrate que el nombre sea exacto)
                 source: "STUPOR_RevistaCompleta_WEB-FINAL_v01_17122025.pdf",
                 
                 webgl: true,
                 height: "100%",
-                duration: 700, // Transición un poco más rápida (snappy)
-                backgroundColor: "#0d0d0d",
+                duration: 800,
                 
-                // Desactivamos rutas de carpetas para carga directa
+                // Color de fondo del Canvas 3D (Coincide con el CSS)
+                backgroundColor: "#F0F0F0", 
+                
                 disableFolderPath: true, 
 
-                // Traducción (Todo en mayúsculas para estilo editorial)
+                // Textos UI (Todo en mayúsculas, estilo técnico)
                 text: {
                     toggleSound: "SONIDO",
                     toggleThumbnails: "VISTA PREVIA",
@@ -124,12 +167,10 @@
                     zoomOut: "ZOOM -"
                 },
                 
-                // Controles esenciales solamente
                 allControls: "altPrev,pageNumber,altNext,play,outline,thumbnail,zoomIn,zoomOut,fullScreen",
                 hideControls: "share,download,more" 
             };
 
-            // Iniciar libro
             var book = $("#flipbook-container").flipBook(bookOptions.source, bookOptions);
         });
     </script>
