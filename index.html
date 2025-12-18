@@ -5,25 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>STUPOR | Revista de Música Alternativa</title>
 
-    <!-- 1. FUENTES -->
+    <!-- 1. FUENTE: ARCHIVO -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-    <!-- 2. ESTILOS DE LIBRERÍAS -->
-    <!-- dFlip (Libro) -->
+    <!-- 2. Estilos dFlip -->
     <link href="https://cdn.jsdelivr.net/npm/dflip/css/dflip.min.css" rel="stylesheet" type="text/css">
     <link href="https://cdn.jsdelivr.net/npm/dflip/css/themify-icons.min.css" rel="stylesheet" type="text/css">
-    <!-- Kursor (Cursor personalizado) -->
+    <!-- Kursor (Cursor) -->
     <link rel="stylesheet" href="https://unpkg.com/kursor/dist/kursor.css">
-    <!-- Tippy (Tooltips animados) -->
+    <!-- Tippy (Tooltips) -->
     <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css"/>
 
     <style>
-        /* --- PALETA STUPOR --- */
+        /* --- PALETA --- */
         :root {
             --bg-color: #050505;      
-            --accent-color: #dc6b2f;  
+            --accent-color: #dc6b2f;  /* TU NARANJA EXACTO */
             --text-main: #FFFFFF;     
             --ui-opacity: 0.6;
         }
@@ -34,7 +33,7 @@
             background-color: var(--bg-color);
             font-family: 'Archivo', sans-serif !important;
             overflow: hidden;
-            cursor: none; /* Ocultamos cursor nativo para Kursor.js */
+            cursor: none; /* Cursor de Kursor.js */
         }
 
         /* --- VISUALIZADOR --- */
@@ -42,26 +41,63 @@
             height: 100vh;
             width: 100vw;
             position: relative;
-            z-index: 10; /* Encima del grano */
+            z-index: 10;
         }
 
-        /* Barra de herramientas limpia */
+        /* Barra transparente */
         .df-ui-wrapper {
             background: transparent !important;
             box-shadow: none !important;
             border: none !important;
-            padding-bottom: 40px !important;
+            padding-bottom: 30px !important;
         }
 
-        /* Botones Minimalistas (Iconos puros) */
+        /* --- CORRECCIÓN DEL FOLIO (1/14) --- */
+        /* 1. El contenedor del input */
+        .df-ui-page {
+            width: auto !important;      /* Ancho automático */
+            min-width: 0 !important;     /* Quitar mínimos */
+            margin: 0 5px !important;    /* Separación mínima con las flechas */
+            padding: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            border: none !important;
+        }
+
+        /* 2. El texto/input en sí */
+        .df-ui-page input {
+            width: 45px !important;      /* Ancho forzado pequeño */
+            text-align: center !important;
+            background: transparent !important;
+            border: none !important;
+            color: var(--text-main) !important;
+            font-family: 'Archivo', sans-serif !important;
+            font-size: 11px !important;  /* Tamaño coherente */
+            padding: 0 !important;
+            height: 30px !important;
+            box-shadow: none !important;
+        }
+        /* Al escribir, línea sutil naranja */
+        .df-ui-page input:focus {
+            border-bottom: 1px solid var(--accent-color) !important;
+            outline: none;
+        }
+        
+        /* 3. Las flechas pegadas al número (< y >) */
+        /* Reducimos su margen para compactar el bloque */
+        .df-ui-btn.df-ui-prev, .df-ui-btn.df-ui-next {
+            margin: 0 2px !important; 
+        }
+
+        /* --- BOTONES GENERALES --- */
         .df-ui-btn {
             background: transparent !important;
             border: none !important;
             box-shadow: none !important;
             color: var(--text-main) !important;
             border-radius: 50% !important;
-            margin: 0 8px !important;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); /* Rebote elástico */
+            margin: 0 8px !important; /* Separación normal para el resto */
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             opacity: var(--ui-opacity);
             width: 40px !important;
             height: 40px !important;
@@ -70,31 +106,28 @@
             justify-content: center;
         }
 
-        /* Interacción Hover */
         .df-ui-btn:hover, .df-ui-btn.active, .df-ui-btn.info-active {
             color: var(--accent-color) !important;
-            background: transparent !important;
             opacity: 1 !important;
             transform: scale(1.3);
-            text-shadow: 0 0 15px rgba(220, 107, 47, 0.6); /* Glow elegante */
+            text-shadow: 0 0 15px rgba(220, 107, 47, 0.6);
         }
 
-        /* --- ESTILOS DE TIPPY (Tooltips modernos) --- */
+        /* --- TIPPY (Tooltips) --- */
         .tippy-box[data-theme~='stupor'] {
             background-color: #1a1a1a;
             color: var(--accent-color);
             font-family: 'Archivo', sans-serif;
             font-weight: 700;
-            font-size: 10px;
+            font-size: 9px;
             letter-spacing: 1px;
             text-transform: uppercase;
             border: 1px solid var(--accent-color);
             border-radius: 0px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
         .tippy-arrow { color: var(--accent-color); }
 
-        /* --- VENTANA MODAL INFO --- */
+        /* --- MODAL INFO --- */
         .modal-overlay {
             display: none; 
             position: fixed;
@@ -107,7 +140,6 @@
             opacity: 0;
             transition: opacity 0.4s ease;
         }
-
         .modal-overlay.show { display: flex; opacity: 1; }
 
         .modal-content {
@@ -123,91 +155,44 @@
         .modal-overlay.show .modal-content { transform: translateY(0); }
 
         .modal-line {
-            width: 50px;
-            height: 2px;
-            background-color: var(--accent-color);
-            margin: 25px auto;
+            width: 50px; height: 2px; background-color: var(--accent-color); margin: 25px auto;
         }
-
         .modal-title {
-            font-size: 32px;
-            font-weight: 800;
-            color: #fff;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 4px;
+            font-size: 32px; font-weight: 800; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 4px;
         }
-        
         .modal-subtitle {
-            font-size: 11px;
-            color: var(--accent-color);
-            margin-bottom: 30px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-weight: 600;
+            font-size: 11px; color: var(--accent-color); margin-bottom: 30px; text-transform: uppercase; letter-spacing: 3px; font-weight: 600;
         }
-
         .modal-body {
-            font-size: 14px;
-            color: #ccc;
-            line-height: 1.8;
-            font-weight: 300;
+            font-size: 14px; color: #ccc; line-height: 1.8; font-weight: 300;
         }
-
         .modal-note {
-            margin-top: 40px;
-            font-size: 10px;
-            color: #666;
-            max-width: 80%;
-            margin-left: auto;
-            margin-right: auto;
-            border-top: 1px solid #222;
-            padding-top: 15px;
+            margin-top: 40px; font-size: 10px; color: #666; max-width: 80%; margin-left: auto; margin-right: auto; border-top: 1px solid #222; padding-top: 15px;
         }
-
         .close-modal {
-            position: absolute;
-            top: -60px;
-            right: 0;
-            color: #444;
-            font-size: 40px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 100;
-            line-height: 1;
+            position: absolute; top: -60px; right: 0; color: #444; font-size: 40px; cursor: pointer; transition: all 0.3s; font-weight: 100; line-height: 1;
         }
         .close-modal:hover { color: var(--accent-color); transform: rotate(90deg); }
-
         .ti-info-custom:before { content: "\e645"; } 
 
-        /* Ajuste para el grano de fondo */
-        #grained-container {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0;
-            pointer-events: none;
-        }
+        #grained-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
     </style>
 </head>
 <body>
 
-    <!-- FONDO CON GRANO -->
     <div id="grained-container"></div>
 
-    <!-- MODAL INFO -->
+    <!-- MODAL -->
     <div id="infoModal" class="modal-overlay">
         <div class="modal-content">
             <span class="close-modal" onclick="toggleInfo()">&times;</span>
-            
             <div class="modal-title">STUPOR</div>
-            <div class="modal-subtitle">Volumen 01 · Marzo 2024</div>
+            <div class="modal-subtitle">Revista de Música Alternativa (Vol. 01)</div>
             <div class="modal-line"></div>
-            
             <div class="modal-body">
                 <p>EDICIÓN, REDACCIÓN, DISEÑO Y DIAGRAMACIÓN<br>
                 <strong style="color:white; font-size:16px; letter-spacing:1px;">Joaquin Max Cuevas Ventura</strong><br>
                 2024</p>
-                
                 <div class="modal-note">
                     Nota: Este fue un ejercicio de diseño editorial, por lo que esta publicación constituye un proyecto académico con fines pedagógicos y de exhibición de portafolio, exento de cualquier propósito comercial o de lucro.
                 </div>
@@ -215,47 +200,25 @@
         </div>
     </div>
 
-    <!-- LIBRO -->
     <div id="flipbook-container"></div>
 
-    <!-- 3. SCRIPTS LIBRERÍAS -->
-    <!-- jQuery -->
+    <!-- SCRIPTS -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <!-- dFlip -->
     <script src="https://cdn.jsdelivr.net/npm/dflip/js/dflip.min.js"></script>
-    <!-- Grained (Ruido de fondo) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/grained/0.0.2/grained.min.js"></script>
-    <!-- Kursor (Cursor) -->
     <script src="https://unpkg.com/kursor"></script>
-    <!-- Tippy + Popper (Tooltips) -->
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://unpkg.com/tippy.js@6"></script>
 
     <script>
-        // 1. INICIALIZAR GRAINED (Textura)
-        var grainOptions = {
-            "animate": true,
-            "patternWidth": 100,
-            "patternHeight": 100,
-            "grainOpacity": 0.04, // Muy sutil
-            "grainDensity": 1,
-            "grainWidth": 1,
-            "grainHeight": 1
-        };
+        var grainOptions = { "animate": true, "patternWidth": 100, "patternHeight": 100, "grainOpacity": 0.04, "grainDensity": 1, "grainWidth": 1, "grainHeight": 1 };
         grained('#grained-container', grainOptions);
 
-        // 2. INICIALIZAR KURSOR
-        new kursor({
-            type: 1, // Círculo minimalista
-            color: '#dc6b2f',
-            removeDefaultCursor: true
-        });
+        new kursor({ type: 1, color: '#dc6b2f', removeDefaultCursor: true });
 
-        // 3. LÓGICA DEL MODAL
         function toggleInfo() {
             const modal = document.getElementById('infoModal');
             const btn = document.getElementById('btn-info-custom');
-            
             if (modal.classList.contains('show')) {
                 modal.classList.remove('show');
                 setTimeout(() => modal.style.display = 'none', 400); 
@@ -266,67 +229,51 @@
                 if(btn) btn.classList.add('info-active');
             }
         }
-        window.onclick = function(event) {
-            if (event.target == document.getElementById('infoModal')) toggleInfo();
-        }
+        window.onclick = function(event) { if (event.target == document.getElementById('infoModal')) toggleInfo(); }
 
-        // 4. INICIALIZAR LIBRO
         jQuery(document).ready(function() {
-            
             var bookOptions = {
-                // TU PDF (Verifica el nombre)
+                // VERIFICA EL NOMBRE DEL PDF
                 source: "STUPOR_RevistaCompleta_WEB-FINAL_v01_17122025.pdf",
-                
                 webgl: true,
                 height: "100%",
                 duration: 700, 
-                backgroundColor: "transparent", // Transparente para ver el grano
+                backgroundColor: "transparent", 
                 disableFolderPath: true, 
                 
-                // Textos para los tooltips (Tippy los leerá de aquí)
                 text: {
-                    toggleSound: "Sonido",
-                    toggleThumbnails: "Vista Previa",
-                    toggleOutline: "Índice",
-                    previousPage: "Anterior",
-                    nextPage: "Siguiente",
-                    toggleFullscreen: "Pantalla Completa",
-                    zoomIn: "Acercar",
-                    zoomOut: "Alejar"
+                    toggleSound: "SONIDO",
+                    toggleThumbnails: "VISTA",
+                    toggleOutline: "INDICE",
+                    previousPage: "PREV",
+                    nextPage: "NEXT",
+                    toggleFullscreen: "FULL",
+                    zoomIn: "ZOOM +",
+                    zoomOut: "ZOOM -"
                 },
                 
                 allControls: "altPrev,pageNumber,altNext,play,outline,thumbnail,zoomIn,zoomOut,fullScreen",
                 hideControls: "share,download,more",
 
                 onReady: function(scene) {
-                    // a) Inyectar botón Info
-                    var infoBtn = $('<div class="df-ui-btn df-ui-info" id="btn-info-custom" title="INFORMACIÓN">' +
-                                        '<i class="ti-info-alt"></i>' +
-                                    '</div>');
+                    var infoBtn = $('<div class="df-ui-btn df-ui-info" id="btn-info-custom" title="INFORMACIÓN"><i class="ti-info-alt"></i></div>');
                     infoBtn.on('click', function() { toggleInfo(); });
                     var controls = $('.df-ui-wrapper');
                     if(controls.length > 0) { controls.append(infoBtn); }
 
-                    // b) Aplicar Tippy.js a todos los botones
                     setTimeout(function() {
                         tippy('.df-ui-btn', {
-                            content(reference) {
-                                return reference.getAttribute('title');
-                            },
-                            theme: 'stupor', // Tema personalizado definido en CSS
-                            animation: 'scale',
-                            placement: 'top',
-                            arrow: true,
+                            content(reference) { return reference.getAttribute('title'); },
+                            theme: 'stupor', animation: 'scale', placement: 'top', arrow: true,
                         });
-                        // Quitamos el title nativo para que no salga doble
                         $('.df-ui-btn').removeAttr('title');
-                    }, 500); // Pequeño delay para asegurar que los botones existen
+                        // Asegurar que el input no tenga title que moleste
+                        $('.df-ui-page input').removeAttr('title');
+                    }, 500);
                 }
             };
-
             var book = $("#flipbook-container").flipBook(bookOptions.source, bookOptions);
         });
     </script>
-
 </body>
 </html>
