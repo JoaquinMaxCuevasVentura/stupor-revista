@@ -5,22 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>STUPOR | Revista de Música Alternativa</title>
 
-    <!-- 1. FUENTE: ARCHIVO -->
+    <!-- 1. FUENTE ARCHIVO -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-    <!-- 2. LIBRERÍAS (CDNs estables) -->
-    <!-- dFlip -->
+    <!-- 2. ESTILOS DFLIP -->
     <link href="https://cdn.jsdelivr.net/npm/dflip/css/dflip.min.css" rel="stylesheet" type="text/css">
     <link href="https://cdn.jsdelivr.net/npm/dflip/css/themify-icons.min.css" rel="stylesheet" type="text/css">
-    <!-- Tippy.js (Tooltips) -->
-    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css"/>
 
     <style>
-        /* --- PALETA DE COLORES --- */
+        /* --- CONFIGURACIÓN VISUAL --- */
         :root {
-            --bg-color: #050505;      /* Negro Profundo */
+            --bg-color: #050505;      
             --accent-color: #dc6b2f;  /* TU NARANJA EXACTO */
             --text-main: #FFFFFF;     
             --ui-opacity: 0.7;
@@ -34,26 +31,23 @@
             overflow: hidden;
         }
 
-        /* --- FONDO CON GRANO (Grained.js) --- */
+        /* Capa de Ruido (Fondo) */
         #grained-container {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1; /* CRÍTICO: Envía el grano al fondo para no tapar el libro */
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; /* Al fondo */
             pointer-events: none;
         }
 
-        /* --- VISUALIZADOR --- */
+        /* Capa del Libro (Encima del ruido) */
         #flipbook-container {
             height: 100vh;
             width: 100vw;
             position: relative;
-            z-index: 10; /* El libro siempre encima */
+            z-index: 10; 
         }
 
-        /* Barra de herramientas invisible */
+        /* --- INTERFAZ MINIMALISTA --- */
         .df-ui-wrapper {
             background: transparent !important;
             box-shadow: none !important;
@@ -61,38 +55,34 @@
             padding-bottom: 30px !important;
         }
 
-        /* --- BOTONES (ICONOS PUROS) --- */
+        /* Botones Limpios */
         .df-ui-btn {
             background: transparent !important;
             border: none !important;
             box-shadow: none !important;
             color: var(--text-main) !important;
-            border-radius: 0 !important; /* Sin círculos */
-            margin: 0 10px !important;
-            transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border-radius: 0 !important;
+            margin: 0 8px !important;
+            transition: all 0.2s ease;
             opacity: var(--ui-opacity);
             width: auto !important;
             height: auto !important;
-            display: flex !important;
-            align-items: center;
-            justify-content: center;
         }
 
-        /* Hover: Solo color y escala */
+        /* Interacción (Naranja) */
         .df-ui-btn:hover, .df-ui-btn.active, .df-ui-btn.info-active {
             color: var(--accent-color) !important;
             background: transparent !important;
             opacity: 1 !important;
-            transform: scale(1.4); /* Crecen un poco */
-            text-shadow: 0 0 15px rgba(220, 107, 47, 0.6); /* Brillo sutil */
+            transform: scale(1.3);
+            text-shadow: 0 0 10px rgba(220, 107, 47, 0.5);
         }
 
-        /* --- CORRECCIÓN FOLIO (1/14) --- */
+        /* --- CORRECCIÓN DEL FOLIO (1/14) --- */
         .df-ui-page {
             width: auto !important;
             min-width: 0 !important;
-            margin: 0 2px !important;
-            padding: 0 !important;
+            margin: 0 !important;
             background: transparent !important;
             box-shadow: none !important;
             border: none !important;
@@ -109,36 +99,19 @@
             height: 30px !important;
             box-shadow: none !important;
         }
-        .df-ui-page input:focus {
-            color: var(--accent-color) !important;
-            outline: none;
-        }
-        /* Juntar las flechas al número */
-        .df-ui-btn.df-ui-prev, .df-ui-btn.df-ui-next { margin: 0 !important; }
+        .df-ui-btn.df-ui-prev, .df-ui-btn.df-ui-next { margin: 0 2px !important; }
 
-        /* --- TOOLTIPS (Tippy.js) --- */
-        .tippy-box[data-theme~='stupor'] {
-            background-color: #111;
-            color: var(--accent-color);
-            font-family: 'Archivo', sans-serif;
-            font-weight: 700;
-            font-size: 10px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            border: 1px solid var(--accent-color);
-            border-radius: 2px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-        }
-        .tippy-arrow { color: var(--accent-color); }
+        /* Ocultar links amarillos */
+        .df-page-content .df-link, .df-page-content a { opacity: 0 !important; background: transparent !important; }
+        .df-page-content .df-link:hover, .df-page-content a:hover { opacity: 0 !important; }
 
         /* --- VENTANA MODAL INFO --- */
         .modal-overlay {
             display: none; 
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.92); 
-            backdrop-filter: blur(5px); 
-            z-index: 10000;
+            background: rgba(0, 0, 0, 0.95); 
+            z-index: 9999;
             justify-content: center;
             align-items: center;
             opacity: 0;
@@ -147,44 +120,26 @@
         .modal-overlay.show { display: flex; opacity: 1; }
 
         .modal-content {
-            background: transparent;
             color: #fff;
             max-width: 500px;
             width: 80%;
             text-align: center;
             position: relative;
         }
-
-        .modal-line {
-            width: 40px; height: 2px; background-color: var(--accent-color); margin: 20px auto;
-        }
-        .modal-title {
-            font-size: 24px; font-weight: 800; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 3px;
-        }
-        .modal-subtitle {
-            font-size: 11px; color: var(--accent-color); margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600;
-        }
-        .modal-body {
-            font-size: 14px; color: #ccc; line-height: 1.6; font-weight: 300;
-        }
-        .modal-note {
-            margin-top: 30px; font-size: 10px; color: #555; max-width: 90%; margin-left: auto; margin-right: auto; padding-top: 15px; border-top: 1px solid #222;
-        }
-        .close-modal {
-            position: absolute; top: -50px; right: 0; color: #666; font-size: 30px; cursor: pointer; transition: 0.2s; font-weight: 100;
-        }
-        .close-modal:hover { color: var(--accent-color); transform: scale(1.1); }
+        .modal-line { width: 40px; height: 2px; background-color: var(--accent-color); margin: 20px auto; }
+        .modal-title { font-size: 24px; font-weight: 800; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 3px; }
+        .modal-subtitle { font-size: 11px; color: var(--accent-color); margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
+        .modal-body { font-size: 14px; color: #ccc; line-height: 1.6; font-weight: 300; }
+        .modal-note { margin-top: 30px; font-size: 10px; color: #666; border-top: 1px solid #222; padding-top: 15px; }
+        .close-modal { position: absolute; top: -50px; right: 0; color: #666; font-size: 30px; cursor: pointer; transition: 0.2s; font-weight: 100; }
+        .close-modal:hover { color: var(--accent-color); }
         .ti-info-custom:before { content: "\e645"; } 
-
-        /* Ocultar links del PDF */
-        .df-page-content .df-link, .df-page-content a { opacity: 0 !important; background: transparent !important; }
-        .df-page-content .df-link:hover, .df-page-content a:hover { opacity: 0 !important; }
 
     </style>
 </head>
 <body>
 
-    <!-- FONDO TEXTURIZADO -->
+    <!-- FONDO -->
     <div id="grained-container"></div>
 
     <!-- MODAL INFO -->
@@ -208,39 +163,40 @@
     <!-- LIBRO -->
     <div id="flipbook-container"></div>
 
-    <!-- SCRIPTS -->
+    <!-- 3. SCRIPTS (ORDEN CRÍTICO) -->
+    <!-- jQuery (Necesario para dFlip) -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- dFlip -->
     <script src="https://cdn.jsdelivr.net/npm/dflip/js/dflip.min.js"></script>
-    <!-- Librerías Extra -->
+    <!-- Grained -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/grained/0.0.2/grained.min.js"></script>
-    <script src="https://unpkg.com/@popperjs/core@2"></script>
-    <script src="https://unpkg.com/tippy.js@6"></script>
 
     <script>
-        // 1. INICIAR GRANO (Con z-index negativo para no tapar)
-        var grainOptions = {
-            "animate": true,
-            "patternWidth": 100,
-            "patternHeight": 100,
-            "grainOpacity": 0.05,
-            "grainDensity": 1,
-            "grainWidth": 1,
-            "grainHeight": 1
-        };
-        grained('#grained-container', grainOptions);
+        // 1. INICIAR EL GRANO (Fondo)
+        try {
+            grained('#grained-container', {
+                "animate": true,
+                "patternWidth": 100,
+                "patternHeight": 100,
+                "grainOpacity": 0.05,
+                "grainDensity": 1,
+                "grainWidth": 1,
+                "grainHeight": 1
+            });
+        } catch(e) { console.log("Error cargando grano: ", e); }
 
-        // 2. FUNCIONES DEL MODAL
+        // 2. FUNCIONES MODAL
         function toggleInfo() {
-            const modal = document.getElementById('infoModal');
-            const btn = document.getElementById('btn-info-custom');
+            var modal = document.getElementById('infoModal');
+            var btn = document.getElementById('btn-info-custom');
             
             if (modal.classList.contains('show')) {
                 modal.classList.remove('show');
-                setTimeout(() => modal.style.display = 'none', 300); 
+                setTimeout(function() { modal.style.display = 'none'; }, 300); 
                 if(btn) btn.classList.remove('info-active');
             } else {
                 modal.style.display = 'flex';
-                setTimeout(() => modal.classList.add('show'), 10);
+                setTimeout(function() { modal.classList.add('show'); }, 10);
                 if(btn) btn.classList.add('info-active');
             }
         }
@@ -251,51 +207,37 @@
         // 3. INICIAR LIBRO
         jQuery(document).ready(function() {
             
+            // ASEGÚRATE QUE ESTE NOMBRE SEA EXACTO AL 100%
+            var pdfName = "STUPOR_RevistaCompleta_WEB-FINAL_v01_17122025.pdf";
+
             var bookOptions = {
-                // TU PDF (Asegúrate que coincida)
-                source: "STUPOR_RevistaCompleta_WEB-FINAL_v01_17122025.pdf",
-                
+                source: pdfName,
                 webgl: true,
                 height: "100%",
                 duration: 700, 
-                backgroundColor: "transparent", // Importante para ver el grano
+                backgroundColor: "transparent", // Para ver el grano
                 disableFolderPath: true, 
 
                 text: {
-                    toggleSound: "Sonido",
-                    toggleThumbnails: "Vista",
-                    toggleOutline: "Índice",
-                    previousPage: "Ant",
-                    nextPage: "Sig",
-                    toggleFullscreen: "Full",
-                    zoomIn: "Zoom +",
-                    zoomOut: "Zoom -"
+                    toggleSound: "SONIDO",
+                    toggleThumbnails: "VISTA",
+                    toggleOutline: "INDICE",
+                    previousPage: "ANT",
+                    nextPage: "SIG",
+                    toggleFullscreen: "FULL",
+                    zoomIn: "ZOOM +",
+                    zoomOut: "ZOOM -"
                 },
                 
                 allControls: "altPrev,pageNumber,altNext,play,outline,thumbnail,zoomIn,zoomOut,fullScreen",
                 hideControls: "share,download,more",
 
                 onReady: function(scene) {
-                    // a) Inyectar botón Info
-                    var infoBtn = $('<div class="df-ui-btn df-ui-info" id="btn-info-custom" title="INFORMACIÓN">' +
-                                        '<i class="ti-info-alt"></i>' +
-                                    '</div>');
+                    // Inyectar botón Info
+                    var infoBtn = $('<div class="df-ui-btn df-ui-info" id="btn-info-custom" title="INFORMACIÓN"><i class="ti-info-alt"></i></div>');
                     infoBtn.on('click', function() { toggleInfo(); });
                     var controls = $('.df-ui-wrapper');
                     if(controls.length > 0) { controls.append(infoBtn); }
-
-                    // b) Iniciar Tooltips
-                    setTimeout(function() {
-                        tippy('.df-ui-btn', {
-                            content(reference) { return reference.getAttribute('title'); },
-                            theme: 'stupor', 
-                            animation: 'scale',
-                            placement: 'top',
-                            arrow: true,
-                        });
-                        $('.df-ui-btn').removeAttr('title');
-                        $('.df-ui-page input').removeAttr('title');
-                    }, 500);
                 }
             };
 
