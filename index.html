@@ -3,12 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DAVID LYNCH | Infografía</title>
+    <title>STUPOR | Revista de música alternativa</title>
 
     <!-- 1. FUENTE ARCHIVO -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <!-- 2. ESTILOS DFLIP -->
     <link href="https://cdn.jsdelivr.net/npm/dflip/css/dflip.min.css" rel="stylesheet" type="text/css">
@@ -18,9 +18,9 @@
         /* --- CONFIGURACIÓN VISUAL --- */
         :root {
             --bg-color: #050505;      
-            --accent-color: #dc6b2f;  /* Naranja Lynch */
+            --accent-color: #dc6b2f;  /* TU NARANJA EXACTO */
             --text-main: #FFFFFF;     
-            --ui-opacity: 0.6;        /* Opacidad inicial de botones */
+            --ui-opacity: 0.7;
         }
 
         body, html {
@@ -35,11 +35,11 @@
         #grained-container {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0; 
+            z-index: 0; /* Al fondo */
             pointer-events: none;
         }
 
-        /* Contenedor del Visor */
+        /* Capa del Libro (Encima del ruido) */
         #flipbook-container {
             height: 100vh;
             width: 100vw;
@@ -47,173 +47,92 @@
             z-index: 10; 
         }
 
-        /* --- INTERFAZ LIMPIA (CORRECCIONES) --- */
-        
-        /* Contenedor Principal de la UI */
+        /* --- INTERFAZ MINIMALISTA --- */
         .df-ui-wrapper {
             background: transparent !important;
             box-shadow: none !important;
             border: none !important;
-            padding-bottom: 30px !important; /* Separación del borde inferior */
-            pointer-events: none; 
-        }
-        
-        /* Contenedor interno de los botones (Donde viven Zoom, Fullscreen e Info) */
-        .df-ui-controls {
-            background: transparent !important; /* SIN FONDO */
-            box-shadow: none !important;      /* SIN SOMBRA */
-            border: none !important;          /* SIN BORDE */
-            backdrop-filter: none !important; /* SIN BLUR */
-            border-radius: 0 !important;
-            padding: 0 !important;
-            
-            /* Alineación Flex Perfecta */
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            pointer-events: auto;
+            padding-bottom: 30px !important;
         }
 
-        /* Estilo de TODOS los botones (Nativos y Custom) */
+        /* Botones Limpios */
         .df-ui-btn {
             background: transparent !important;
             border: none !important;
             box-shadow: none !important;
-            color: #AAAAAA !important; /* Gris claro por defecto */
+            color: var(--text-main) !important;
             border-radius: 0 !important;
-            margin: 0 15px !important; /* Espaciado uniforme */
-            transition: all 0.3s ease;
-            width: auto !important; 
+            margin: 0 8px !important;
+            transition: all 0.2s ease;
+            opacity: var(--ui-opacity);
+            width: auto !important;
             height: auto !important;
-            opacity: 1 !important; /* Controlamos color, no opacidad */
-            display: flex !important;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        /* Iconos */
-        .df-ui-btn i {
-            font-size: 22px !important; /* Tamaño uniforme */
-            line-height: 1 !important;
-            font-weight: normal !important;
         }
 
-        /* Hover / Activo */
+        /* Interacción (Naranja) */
         .df-ui-btn:hover, .df-ui-btn.active, .df-ui-btn.info-active {
             color: var(--accent-color) !important;
-            transform: scale(1.2);
-            text-shadow: 0 0 15px rgba(220, 107, 47, 0.6);
+            background: transparent !important;
+            opacity: 1 !important;
+            transform: scale(1.3);
+            text-shadow: 0 0 10px rgba(220, 107, 47, 0.5);
         }
 
-        /* --- OCULTAR ELEMENTOS NO DESEADOS --- */
-        /* Ocultar botones extra de navegación, sonido, share, etc. */
-        .df-ui-prev, .df-ui-next, .df-ui-page, .df-ui-sound, .df-ui-share, .df-ui-more, .df-ui-outline, .df-ui-help {
-            display: none !important; 
+        /* --- CORRECCIÓN DEL FOLIO (1/14) --- */
+        .df-ui-page {
+            width: auto !important;
+            min-width: 0 !important;
+            margin: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            border: none !important;
         }
-        /* Regla extra para asegurar que NO salga nada en la esquina superior */
-        .df-ui-wrapper.df-ui-top { display: none !important; } 
+        .df-ui-page input {
+            width: 40px !important;
+            text-align: center !important;
+            background: transparent !important;
+            border: none !important;
+            color: var(--text-main) !important;
+            font-family: 'Archivo', sans-serif !important;
+            font-size: 12px !important;
+            padding: 0 !important;
+            height: 30px !important;
+            box-shadow: none !important;
+        }
+        .df-ui-btn.df-ui-prev, .df-ui-btn.df-ui-next { margin: 0 2px !important; }
 
+        /* Ocultar links amarillos */
+        .df-page-content .df-link, .df-page-content a { opacity: 0 !important; background: transparent !important; }
+        .df-page-content .df-link:hover, .df-page-content a:hover { opacity: 0 !important; }
 
-        /* --- VENTANA MODAL INFO (ESTILO STUPOR) --- */
+        /* --- VENTANA MODAL INFO --- */
         .modal-overlay {
             display: none; 
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.98); /* Fondo casi negro total */
+            background: rgba(0, 0, 0, 0.95); 
             z-index: 9999;
             justify-content: center;
             align-items: center;
             opacity: 0;
-            transition: opacity 0.4s ease;
+            transition: opacity 0.3s ease;
         }
         .modal-overlay.show { display: flex; opacity: 1; }
 
-        /* Contenido SIN recuadro, solo texto flotante */
         .modal-content {
             color: #fff;
-            max-width: 700px;
-            width: 90%;
+            max-width: 500px;
+            width: 80%;
             text-align: center;
             position: relative;
-            background: transparent; /* Transparente */
-            border: none;            /* Sin borde */
-            box-shadow: none;        /* Sin sombra */
-            padding: 20px;
         }
-
-        /* Tipografía Modal */
-        .modal-title { 
-            font-size: 36px; 
-            font-weight: 800; 
-            margin-bottom: 5px; 
-            text-transform: uppercase; 
-            letter-spacing: 4px; 
-            color: #FFFFFF;
-        }
-        .modal-subtitle { 
-            font-size: 13px; 
-            color: var(--accent-color); 
-            margin-bottom: 25px; 
-            text-transform: uppercase; 
-            letter-spacing: 3px; 
-            font-weight: 700; 
-        }
-        
-        .modal-line { 
-            width: 40px; 
-            height: 2px; 
-            background-color: var(--accent-color); 
-            margin: 30px auto; 
-            opacity: 0.8;
-        }
-
-        .modal-role { 
-            font-size: 12px; 
-            color: #999; 
-            margin-top: 10px; 
-            letter-spacing: 1px; 
-            text-transform: uppercase;
-        }
-        
-        .modal-author { 
-            color: #FFFFFF; 
-            font-size: 18px; 
-            letter-spacing: 1px; 
-            margin-top: 5px; 
-            font-weight: 700; 
-        }
-
-        .modal-year { 
-            font-size: 14px; 
-            color: #777; 
-            margin-top: 5px; 
-            font-weight: 300;
-        }
-
-        .modal-note { 
-            margin-top: 60px; 
-            font-size: 11px; 
-            color: #444; 
-            line-height: 1.6; 
-            max-width: 80%;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        /* Botón cerrar sutil (X) */
-        .close-modal { 
-            position: absolute; 
-            top: 0; right: 0; 
-            color: #333; 
-            font-size: 24px; 
-            cursor: pointer; 
-            transition: 0.2s; 
-            font-family: sans-serif;
-            font-weight: 100;
-        }
+        .modal-line { width: 40px; height: 2px; background-color: var(--accent-color); margin: 20px auto; }
+        .modal-title { font-size: 24px; font-weight: 800; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 3px; }
+        .modal-subtitle { font-size: 11px; color: var(--accent-color); margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
+        .modal-body { font-size: 14px; color: #ccc; line-height: 1.6; font-weight: 300; }
+        .modal-note { margin-top: 30px; font-size: 10px; color: #666; border-top: 1px solid #222; padding-top: 15px; }
+        .close-modal { position: absolute; top: -50px; right: 0; color: #666; font-size: 30px; cursor: pointer; transition: 0.2s; font-weight: 100; }
         .close-modal:hover { color: var(--accent-color); }
-
-        /* Icono info */
         .ti-info-custom:before { content: "\e645"; } 
 
     </style>
@@ -223,36 +142,37 @@
     <!-- FONDO -->
     <div id="grained-container"></div>
 
-    <!-- MODAL INFO (Estilo STUPOR) -->
+    <!-- MODAL INFO -->
     <div id="infoModal" class="modal-overlay">
         <div class="modal-content">
-            <span class="close-modal" onclick="toggleInfo()">✕</span>
-            
-            <div class="modal-title">DAVID LYNCH</div>
-            <div class="modal-subtitle">DECODIFICACIÓN FÍLMICA [INFOGRAFÍA]</div>
-            
+            <span class="close-modal" onclick="toggleInfo()">&times;</span>
+            <div class="modal-title">STUPOR</div>
+            <div class="modal-subtitle">Revista de música alternativa (Vol. 01)</div>
             <div class="modal-line"></div>
-            
-            <div class="modal-role">INVESTIGACIÓN, REDACCIÓN E ILUSTRACIÓN</div>
-            <div class="modal-author">Joaquin Max Cuevas Ventura</div>
-            <div class="modal-year">2021</div>
-
-            <div class="modal-note">
-                Nota: Este fue un ejercicio de diseño de información, por lo que esta publicación constituye un proyecto académico con fines pedagógicos y de exhibición de portafolio, exento de cualquier propósito comercial o de lucro.
+            <div class="modal-body">
+                <p>EDICIÓN, REDACCIÓN, DISEÑO Y DIAGRAMACIÓN<br>
+                <strong style="color:white; font-size:15px; letter-spacing:1px;">Joaquin Max Cuevas Ventura</strong><br>
+                2024</p>
+                <div class="modal-note">
+                    Nota: Este fue un ejercicio de diseño editorial, por lo que esta publicación constituye un proyecto académico con fines pedagógicos y de exhibición de portafolio, exento de cualquier propósito comercial o de lucro.
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- VISOR -->
+    <!-- LIBRO -->
     <div id="flipbook-container"></div>
 
-    <!-- 3. SCRIPTS -->
+    <!-- 3. SCRIPTS (ORDEN CRÍTICO) -->
+    <!-- jQuery (Necesario para dFlip) -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- dFlip -->
     <script src="https://cdn.jsdelivr.net/npm/dflip/js/dflip.min.js"></script>
+    <!-- Grained -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/grained/0.0.2/grained.min.js"></script>
 
     <script>
-        // 1. INICIAR EL GRANO
+        // 1. INICIAR EL GRANO (Fondo)
         try {
             grained('#grained-container', {
                 "animate": true,
@@ -268,7 +188,7 @@
         // 2. FUNCIONES MODAL
         function toggleInfo() {
             var modal = document.getElementById('infoModal');
-            var btn = document.querySelector('.df-ui-custom-info'); // Selector actualizado
+            var btn = document.getElementById('btn-info-custom');
             
             if (modal.classList.contains('show')) {
                 modal.classList.remove('show');
@@ -284,48 +204,40 @@
             if (event.target == document.getElementById('infoModal')) toggleInfo();
         }
 
-        // 3. INICIAR VISOR
+        // 3. INICIAR LIBRO
         jQuery(document).ready(function() {
             
-            var imageName = "FILMOGRAFIADAVIDLYNCH_InfografiaCompleta_WEB-FINAL_v01_18122025.png";
+            // ASEGÚRATE QUE ESTE NOMBRE SEA EXACTO AL 100%
+            var pdfName = "STUPOR_RevistaCompleta_WEB-FINAL_v01_17122025.pdf";
 
             var bookOptions = {
-                source: [imageName],
+                source: pdfName,
+                webgl: true,
                 height: "100%",
-                webgl: true,            
-                singlePageMode: true,
-                hard: "none",           
-                
-                maxZoom: 8,             
-                zoomRatio: 0.5,         
-                
-                backgroundColor: "transparent",
+                duration: 700, 
+                backgroundColor: "transparent", // Para ver el grano
                 disableFolderPath: true, 
 
-                // Textos vacíos porque usamos iconos
-                text: { toggleFullscreen: "", zoomIn: "", zoomOut: "" },
+                text: {
+                    toggleSound: "SONIDO",
+                    toggleThumbnails: "VISTA",
+                    toggleOutline: "INDICE",
+                    previousPage: "ANT",
+                    nextPage: "SIG",
+                    toggleFullscreen: "FULL",
+                    zoomIn: "ZOOM +",
+                    zoomOut: "ZOOM -"
+                },
                 
-                // Controles Nativos
-                allControls: "zoomIn,zoomOut,fullScreen",
-                // OCULTAMOS TODO LO DEMÁS EXPLICITAMENTE
-                hideControls: "share,download,more,pageNumber,play,outline,thumbnail,altPrev,altNext,help",
+                allControls: "altPrev,pageNumber,altNext,play,outline,thumbnail,zoomIn,zoomOut,fullScreen",
+                hideControls: "share,download,more",
 
                 onReady: function(scene) {
-                    // --- CORRECCIÓN DE ALINEACIÓN ---
-                    // Creamos el botón con la misma clase exacta que los nativos
-                    var infoBtn = $('<div class="df-ui-btn df-ui-custom-info" title="INFORMACIÓN"><i class="ti-info-alt"></i></div>');
+                    // Inyectar botón Info
+                    var infoBtn = $('<div class="df-ui-btn df-ui-info" id="btn-info-custom" title="INFORMACIÓN"><i class="ti-info-alt"></i></div>');
                     infoBtn.on('click', function() { toggleInfo(); });
-                    
-                    // Inyectamos el botón DENTRO del contenedor de controles (.df-ui-controls)
-                    // Esto asegura que Flexbox lo alinee igual que los demás.
-                    var controlsContainer = $('.df-ui-controls');
-                    
-                    if(controlsContainer.length > 0) {
-                        controlsContainer.append(infoBtn);
-                    } else {
-                        // Fallback por si la estructura cambia, pero intentamos mantener flex
-                        $('.df-ui-wrapper').append(infoBtn);
-                    }
+                    var controls = $('.df-ui-wrapper');
+                    if(controls.length > 0) { controls.append(infoBtn); }
                 }
             };
 
